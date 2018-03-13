@@ -48,11 +48,7 @@ zlabel('MEDV');
 
 
 mdl2 = fitlm(boston_subset,'MEDV~LSTAT+LSTAT^2')
+feCI=coefCI(mdl2)
 mdl3 = fitlm(boston_subset,'MEDV~LSTAT')
 
-figure(2)
-scatter(y,x)
-plot(mdl2)
-
-tbl=anova(mdl2)
-tbl2 = anova(mdl3)
+%tbl=anova()

@@ -6,4 +6,5 @@
 close all
 clearvars
 
-% FIXME: implement
+T=readtable('carseats.csv');
+mdl= fitlm(T,'Sales~CompPrice+Income+Advertising+Population+Price+ShelveLoc+Age+Education+Urban+US+Income:Advertising+Price:Age')
