@@ -110,28 +110,30 @@ ylabel('Proper detection');
 
 %Wybierz optymalna wartosc k
 
-k=8
+k=8;
 
 %Zadanie 8
+
 % Przedstaw na wykresie granice klas
 
 %Stworz klasyfikator kNN dla 2 wybranych parametrow:
 
-%FIXME
+mdl_2 = fitcknn(X(:,[1 2]),species,'NumNeighbors',k);
 
 %Dane testowe- przestrzen (X- parametry)(odkomentuj:)
-%x1_range = min(X(:,1)):.01:max(X(:,1));
-%x2_range = min(X(:,2)):.01:max(X(:,2));
-%[xx1, xx2] = meshgrid(x1_range,x2_range);
-%XGrid = [xx1(:) xx2(:)];
+x1_range = min(X(:,1)):.01:max(X(:,1));
+x2_range = min(X(:,2)):.01:max(X(:,2));
+[xx1, xx2] = meshgrid(x1_range,x2_range);
+XGrid = [xx1(:) xx2(:)];
 
 % Sklasyfikuj dane ze zbioru testowego
 
-%FIXME
+test_data = predict(mdl_2,XGrid)
 
 % Narysuj wykres (gscatter())
 
-%FIXME
+figure
+gscatter(XGrid(:,1),XGrid(:,2),test_data,'brg')
 
 % DODATKOWO
 %Prosze zapoznac sie z parametrami funkcji fitcknn() : metryki
