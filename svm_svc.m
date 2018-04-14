@@ -66,5 +66,5 @@ legend('Class 1+','Class 1-', 'Suport vector', 'Decision boundary', 'Class +1 pr
 
 %% Get posteriors.
 
-Mdl2= fitPosterior(Mdl);
-[labels,posterior] = predict(Mdl2,newX)
+Mdl2= Posterior(X,Y);
+[labels,score] = predict(Mdl2,newX)

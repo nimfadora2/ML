@@ -35,9 +35,4 @@ figure(1)
 gh = gscatter(X(:,1),X(:,2),Y,'rgb','oxd',8);
 hold on
 
-contour(x1Grid,x2Grid,...
-        reshape(PosteriorRegion(:,1),size(x1Grid,1),size(x1Grid,2)),[0.5 0.5]);
-    contour(x1Grid,x2Grid,...
-        reshape(PosteriorRegion(:,2),size(x1Grid,1),size(x1Grid,2)),[0.5 0.5]);
-    contour(x1Grid,x2Grid,...
-        reshape(PosteriorRegion(:,3),size(x1Grid,1),size(x1Grid,2)),[0.5 0.5]);
+contour(x1Grid,x2Grid,PosteriorRegion[:,2,[0.5 0 0]);
