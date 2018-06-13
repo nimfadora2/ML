@@ -21,8 +21,8 @@ plt.figure()
 plt.hist(X)
 
 def estimate_gaussian(X):  
-    mu = 1/(len(X))*sum(X)
-    sigma = (1/(len(X)))*(sum((X-mu)**2))
+    mu = X.mean(axis = 0)
+    sigma = X.var(axis = 0)
     return mu, sigma
     
 mu, sigma = estimate_gaussian(X[:,0])
@@ -38,26 +38,36 @@ p = np.zeros((X.shape))
 p[:,0] = stats.norm(mu, sigma).pdf(X[:,0])
 p[:,1] = stats.norm(mu1, sigma1).pdf(X[:,1])
 
-pval = np.zeros((Xval.shape))
-pval[:,0] = stats.norm(muv, sigmav).pdf(Xval[:,0])
-pval[:,1] = stats.norm(muv1, sigmav1).pdf(Xval[:,1])
+pval = np.zeros((Xval.shape[0], Xval.shape[1]))
+pval[:,0] = stats.norm(mu, sigma).pdf(Xval[:,0])
+pval[:,1] = stats.norm(mu1, sigma1).pdf(Xval[:,1])
 
-def select_threshold(pval, yval): 
+def select_threshold(pval, yval):
     best_epsilon = 0
     best_f1 = 0
+    f1 = 0
 
-    for i in range(1000):
-        cur_eps = np.amin(pval)+i*(np.amax(pval)-np.amin(pval))/1000
-        
-        first = pval[:,0]<cur_eps
-        second = pval[:,1]<cur_eps
-        both = np.logical_and(first,second)
-        
-        tp = np.logical_and(both,yval)
+    step = (pval.max() - pval.min()) / 1000
+
+    for epsilon in np.arange(pval.min(), pval.max(), step):
+        preds = pval < epsilon
+
+        tp = np.sum(np.logical_and(preds == 1, yval == 1)).astype(float)
+        fp = np.sum(np.logical_and(preds == 1, yval == 0)).astype(float)
+        fn = np.sum(np.logical_and(preds == 0, yval == 1)).astype(float)
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        f1 = (2 * precision * recall) / (precision + recall)
+
+        if f1 > best_f1:
+            best_f1 = f1
+            best_epsilon = epsilon
+
     return best_epsilon, best_f1
 
 #print(yval)
 
-select_threshold(pval,yval)
+print(select_threshold(pval,yval))
 
 print(mu,sigma,mu1,sigma1)
